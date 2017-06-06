@@ -5,6 +5,8 @@ import br.cesjf.lppo.dao.LivroJpaController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -19,7 +21,7 @@ import javax.transaction.UserTransaction;
  *
  * @author alunoces
  */
-@WebServlet(name = "LivroServlet", urlPatterns = {"/editar.html", "/excluir.html", "listar.html"})
+@WebServlet(name = "LivroServlet", urlPatterns = {"/editar.html", "/excluir.html", "/listar.html", "/criar.html"})
 public class LivroServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "lppo-2017-jpa@PU")
@@ -35,10 +37,10 @@ public class LivroServlet extends HttpServlet {
             doEditarGet(request, response);
         } else if (request.getServletPath().contains("/excluir.html")) {
             doExcluirGet(request, response);
-
         } else if (request.getServletPath().contains("/listar.html")) {
             doListarGet(request, response);
-
+        } else if (request.getServletPath().contains("/criar.html")) {
+            doCriarGet(request, response);
         }
     }
 
@@ -47,6 +49,8 @@ public class LivroServlet extends HttpServlet {
             throws ServletException, IOException {
         if (request.getServletPath().contains("/editar.html")) {
             doEditarPost(request, response);
+        } else if (request.getServletPath().contains("/criar.html")) {
+            doCriarPost(request, response);
         }
     }
 
@@ -96,5 +100,24 @@ public class LivroServlet extends HttpServlet {
 
         request.setAttribute("livros", livros);
         request.getRequestDispatcher("WEB-INF/listar-livros.jsp").forward(request, response);
+    }
+
+    private void doCriarGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("WEB-INF/novo-livro.jsp").forward(request, response);
+    }
+
+    private void doCriarPost(HttpServletRequest request, HttpServletResponse response) {
+        Livro livro1 = new Livro();
+        livro1.setTitulo(request.getParameter("titulo"));
+        livro1.setAno(Integer.parseInt(request.getParameter("ano")));
+        livro1.setAutor(request.getParameter("autor"));
+
+        LivroJpaController dao = new LivroJpaController(ut, emf);
+        try {
+            dao.create(livro1);
+            response.sendRedirect("listar.html");
+        } catch (Exception ex) {
+            Logger.getLogger(LivroServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
