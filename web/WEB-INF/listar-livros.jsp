@@ -13,6 +13,7 @@
         <title>Listar Livros</title>
     </head>
     <body>
+        <%@include file="jspf/menu.jspf" %>
         <h1>Listar Livros</h1>
         <table>
             <tr>
@@ -23,13 +24,13 @@
                 <th>Ações</th>
             </tr>
             <c:forEach var="livro" items="${livros}">
-            <tr>
-                <td><a href="editar.html?id=${livro.id}">${livro.id}</td>
-                <td>${livro.titulo}</td>
-                <td>${livro.autor}</td>
-                <td>${livro.ano}</td>
-                <td><a href="excluir.html?id=${livro.id}">&128465;</td>
-            </tr>            
+                <tr>
+                    <td><a href="editar.html?id=${livro.id}">${livro.id}</td>
+                    <td>${livro.titulo}</td>
+                    <td>${livro.autor}</td>
+                    <td>${livro.ano}</td>
+                    <td><a href="excluir.html?id=${livro.id}">&128465;</td>
+                </tr>            
             </c:forEach>
         </table>
     </body>
