@@ -20,6 +20,7 @@
                 <th>Título</th>
                 <th>Autor</th>
                 <th>Ano</th>
+                <th>Ações</th>
             </tr>
             <c:forEach var="livro" items="${livros}">
             <tr>
@@ -27,6 +28,7 @@
                 <td>${livro.titulo}</td>
                 <td>${livro.autor}</td>
                 <td>${livro.ano}</td>
+                <td><a href="excluir.html?id=${livro.id}">&128465;</td>
             </tr>            
             </c:forEach>
         </table>
