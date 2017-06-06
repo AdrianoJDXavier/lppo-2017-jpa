@@ -80,11 +80,8 @@ public class LivroServlet extends HttpServlet {
         LivroJpaController dao = new LivroJpaController(ut, emf);
         Long id = Long.parseLong(request.getParameter("id"));
         dao.destroy(id);
-        }catch(Exception ex){
-            
+        }catch(Exception ex){            
         }
         response.sendRedirect("listar.html");
-    }
-
-    
+    }   
 }
