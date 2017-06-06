@@ -31,6 +31,9 @@ public class LivroServlet extends HttpServlet {
             throws ServletException, IOException {
         if(request.getServletPath().contains("/editar.html")){
             doEditarGet(request,response);
+        }else if(request.getServletPath().contains("/excluir.html")){
+            doExcluirGet(request,response);
+            
         }
     }
 
@@ -38,7 +41,9 @@ public class LivroServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        if(request.getServletPath().contains("/editar.html")){
+            doEditarPost(request,response);
+        }
     }
 
     private void doEditarGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,6 +72,18 @@ public class LivroServlet extends HttpServlet {
     }catch(Exception e){
         response.sendRedirect("listar.html");
 }
+    }
+
+   
+    private void doExcluirGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try{
+        LivroJpaController dao = new LivroJpaController(ut, emf);
+        Long id = Long.parseLong(request.getParameter("id"));
+        dao.destroy(id);
+        }catch(Exception ex){
+            
+        }
+        response.sendRedirect("listar.html");
     }
 
     
